@@ -9,10 +9,10 @@ import { RKMark } from './RKMark';
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { label: 'Project Experience', target: 2, suffix: '+' },
-  { label: 'Major Projects',     target: 3, suffix: '+' },
-  { label: 'Global Clients',      target: 0, suffix: '' },
-  { label: 'Countries Served',    target: 0, suffix: '' },
+  { label: 'Years Building',     target: 2, suffix: '+' },
+  { label: 'Major Projects',     target: 3, suffix: '' },
+  { label: 'Hackathon Finals',   target: 2, suffix: '' },
+  { label: 'Core Technologies',  target: 20, suffix: '+' },
 ];
 
 const COUNTRIES = [
@@ -20,8 +20,7 @@ const COUNTRIES = [
 ];
 
 const QUOTE_WORDS = [
-  'I', 'architect', 'systems', 'that', "don’t", 'just', 'work', '—',
-  'they', 'scale,', 'survive', 'failure,', 'and', 'stay', 'clean', 'under', 'pressure.',
+  'I', 'build', 'practical', 'systems', 'that', 'stay', 'clear', 'under', 'pressure.',
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -97,7 +96,7 @@ export function About() {
   const statsInView   = useInView(statsRef,   { once: true, margin: '-5%'  });
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !sectionRef.current) return;
     const ctx = gsap.context(() => {
 
       /* Horizontal rule draw-in */
@@ -225,7 +224,7 @@ export function About() {
             ))}
           </div>
 
-          {/* Countries served */}
+          {/* Location chips */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={statsInView ? { opacity: 1, y: 0 } : {}}

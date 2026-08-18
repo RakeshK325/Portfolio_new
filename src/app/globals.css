@@ -8,6 +8,7 @@
   font-display: swap;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Satoshi';
   src: url('/fonts/Satoshi-VariableItalic.woff2') format('woff2');
@@ -18,63 +19,218 @@
 
 /* ── Tailwind v4 theme ────────────────────────────────────────────────────── */
 @theme inline {
-  --font-sans:  'Satoshi', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Satoshi', system-ui, -apple-system, sans-serif;
   --font-serif: var(--font-instrument), Georgia, serif;
-  --font-mono:  ui-monospace, 'JetBrains Mono', monospace;
+  --font-mono: ui-monospace, 'JetBrains Mono', monospace;
 
-  --color-ink:       #0A0A0A;
-  --color-ink-60:    rgba(10,10,10,0.60);
-  --color-ink-40:    rgba(10,10,10,0.40);
-  --color-ink-20:    rgba(10,10,10,0.20);
-  --color-ink-10:    rgba(10,10,10,0.10);
-  --color-canvas:    #FFFFFF;
-  --color-off:       #F5F5F3;
-  --color-dark:      #0A0A0A;
-  --color-on-dark:   #FFFFFF;
+  --color-ink: #0A0A0A;
+  --color-ink-60: rgba(10, 10, 10, 0.60);
+  --color-ink-40: rgba(10, 10, 10, 0.40);
+  --color-ink-20: rgba(10, 10, 10, 0.20);
+  --color-ink-10: rgba(10, 10, 10, 0.10);
+  --color-canvas: #FFFFFF;
+  --color-off: #F5F5F3;
+  --color-dark: #0A0A0A;
+  --color-on-dark: #FFFFFF;
+  --color-electric: #8AB4FF;
+  --color-cyan: #7DE3E3;
 }
 
-/* ── Custom cursor — hide native on pointer:fine desktop ─────────────────── */
-@media (pointer: fine) and (min-width: 768px) {
-  *, *::before, *::after { cursor: none !important; }
+:root {
+  --accent: #8AB4FF;
+  --accent-soft: rgba(138, 180, 255, 0.18);
+  --cyan: #7DE3E3;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* ── Base ─────────────────────────────────────────────────────────────────── */
+/* ── Document foundation ──────────────────────────────────────────────────── */
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scrollbar-color: rgba(10, 10, 10, 0.28) transparent;
+  scrollbar-width: thin;
 }
-html.lenis        { height: auto; }
-html.lenis body   { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; }
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
 
 body {
+  min-width: 320px;
   font-family: 'Satoshi', system-ui, -apple-system, sans-serif;
   background: #FFFFFF;
   color: #0A0A0A;
   overflow-x: hidden;
 }
 
-/* ── Selection ────────────────────────────────────────────────────────────── */
-::selection      { background: #0A0A0A; color: #FFFFFF; }
-::-moz-selection { background: #0A0A0A; color: #FFFFFF; }
+::selection {
+  background: #8AB4FF;
+  color: #07101F;
+}
+
+::-moz-selection {
+  background: #8AB4FF;
+  color: #07101F;
+}
+
+/* ── High-quality keyboard focus ──────────────────────────────────────────── */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+:where(button, a, input, textarea, select):disabled {
+  cursor: not-allowed;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Use these utilities for copy that should feel intentionally editorial. */
+.text-balance {
+  text-wrap: balance;
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
 
 /* ── Scrollbar ────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar       { width: 2px; }
-::-webkit-scrollbar-track { background: #FFFFFF; }
-::-webkit-scrollbar-thumb { background: rgba(10,10,10,0.15); border-radius: 2px; }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 
-/* ── Projects: responsive section height ──────────────────────────────────────
-   Mobile renders a plain scrolling list (natural height). Only md+ gets the
-   tall scroll-jacked track that the sticky cube scrubs against. Kept in CSS so
-   the correct height applies on first paint — doing it in JS would need a
-   post-mount media check and would flash the wrong layout / risk a hydration
-   mismatch. --scene-vh is set inline by the component. */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.24);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
 .projects-section {
   height: auto;
 }
+
 @media (min-width: 768px) {
   .projects-section {
     height: var(--scene-vh);
+  }
+}
+
+/* ── Custom cursor — only hide the native pointer where the custom cursor is
+   actually useful. Touch and coarse pointers retain the system pointer. ──── */
+@media (pointer: fine) and (min-width: 768px) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+/* ── Reduced-motion contract ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html.lenis,
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Projects: do not spend GPU time on decorative particles for reduced
+   motion; content and project media remain fully available. ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+  canvas[aria-hidden='true'] {
+    opacity: 0.18;
+  }
+}
+
+.projects-reduced-fallback {
+  display: none;
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .projects-motion-desktop {
+    display: none !important;
+  }
+
+  .projects-reduced-fallback {
+    display: block;
+  }
+}
+
+.hero-cta-primary,
+.hero-cta-secondary {
+  min-height: 3rem;
+  border-radius: 0.15rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.hero-cta-primary {
+  color: #fff;
+  background: rgba(7, 10, 14, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hero-cta-primary:hover,
+.hero-cta-primary:focus-visible {
+  background: rgba(11, 17, 24, 0.88);
+  border-color: rgba(125, 227, 227, 0.78);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3), 0 0 24px rgba(125, 227, 227, 0.12);
+}
+
+.hero-cta-secondary {
+  color: #fff;
+  background: rgba(9, 12, 16, 0.38);
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.hero-cta-secondary:hover,
+.hero-cta-secondary:focus-visible {
+  background: rgba(125, 227, 227, 0.12);
+  border-color: rgba(125, 227, 227, 0.82) !important;
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    padding-inline: 1.05rem;
+  }
+
+  .ai-assistant-trigger {
+    left: auto !important;
+    right: 1rem !important;
+    bottom: 1rem !important;
   }
 }

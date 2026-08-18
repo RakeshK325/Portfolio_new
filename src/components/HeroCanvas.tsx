@@ -1,14 +1,12 @@
 'use client';
 
 import { useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 function ParticleField() {
   const ref = useRef<THREE.Points>(null!);
-  const { viewport } = useThree();
-
   const [positions, grid] = useMemo(() => {
     const cols = 28;
     const rows = 18;

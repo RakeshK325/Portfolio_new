@@ -94,7 +94,7 @@ function CountUp({ target, suffix = '+', duration = 1600 }: { target: number; su
 export function Stack() {
   const sectionRef  = useRef<HTMLElement>(null);
   const charRefs    = useRef<(HTMLSpanElement | null)[]>([]);
-  const words       = useMemo(buildFloatWords, []);
+  const words       = useMemo(() => buildFloatWords(), []);
 
   // Mouse-repulsion on title chars
   useEffect(() => {

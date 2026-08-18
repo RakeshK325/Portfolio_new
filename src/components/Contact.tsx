@@ -103,14 +103,50 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
   });
   const [touched, setTouched] = useState({ name: false, email: false, message: false });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const errors = getErrors(form);
   const isValid = !errors.name && !errors.email && !errors.message;
 
   useEffect(() => {
+    const panel = panelRef.current;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }, []);
+
+    const focusFirstControl = () => {
+      panel?.querySelector<HTMLElement>('input, textarea, button')?.focus();
+    };
+    const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab' || !panel) return;
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(focusableSelector));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    const frame = window.requestAnimationFrame(focusFirstControl);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [onClose]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -156,7 +192,11 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
 
       {/* Panel */}
       <motion.div
+        ref={panelRef}
         data-theme="dark"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
         className="relative w-full sm:max-w-xl bg-[#0d0d0d] border border-white/10 overflow-hidden"
         initial={{ y: '100%', opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -183,8 +223,9 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
               >
                 {intent === 'call' ? 'Book a Call' : 'Get in Touch'}
               </span>
-              <h2
-                className="font-black text-white tracking-[-0.035em] leading-tight"
+                <h2
+                  id="contact-modal-title"
+                  className="font-black text-white tracking-[-0.035em] leading-tight"
                 style={{
                   fontFamily: 'Satoshi, system-ui, sans-serif',
                   fontWeight: 900,
@@ -205,8 +246,10 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
               </h2>
             </div>
             <button
+              type="button"
               onClick={onClose}
-              className="w-9 h-9 border border-white/12 flex items-center justify-center text-white/30 hover:text-white hover:border-white/35 transition-colors duration-200 shrink-0 mt-1"
+              aria-label="Close contact form"
+              className="w-9 h-9 border border-white/12 flex items-center justify-center text-white/30 hover:text-white hover:border-white/35 transition-colors duration-200 shrink-0 mt-1 touch-target"
             >
               <X size={14} />
             </button>
@@ -256,12 +299,16 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label
+                      htmlFor="contact-name"
                       className="block text-[0.58rem] tracking-[0.18em] uppercase text-white/28 mb-2 font-medium"
                       style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                     >
                       Name
                     </label>
                     <input
+                      id="contact-name"
+                      name="name"
+                      autoComplete="name"
                       type="text"
                       value={form.name}
                       onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
@@ -270,19 +317,24 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
                       style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                       placeholder="Your name"
                       aria-invalid={touched.name && !!errors.name}
+                      aria-describedby={touched.name && errors.name ? 'contact-name-error' : undefined}
                     />
                     {touched.name && errors.name && (
-                      <span className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.name}</span>
+                      <span id="contact-name-error" className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.name}</span>
                     )}
                   </div>
                   <div>
                     <label
+                      htmlFor="contact-email"
                       className="block text-[0.58rem] tracking-[0.18em] uppercase text-white/28 mb-2 font-medium"
                       style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                     >
                       Email
                     </label>
                     <input
+                      id="contact-email"
+                      name="email"
+                      autoComplete="email"
                       type="email"
                       value={form.email}
                       onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
@@ -291,22 +343,26 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
                       style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                       placeholder="your@email.com"
                       aria-invalid={touched.email && !!errors.email}
+                      aria-describedby={touched.email && errors.email ? 'contact-email-error' : undefined}
                     />
                     {touched.email && errors.email && (
-                      <span className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.email}</span>
+                      <span id="contact-email-error" className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.email}</span>
                     )}
                   </div>
                 </div>
 
                 <div>
                   <label
-                    className="block text-[0.58rem] tracking-[0.18em] uppercase text-white/28 mb-2 font-medium"
-                    style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    rows={5}
+                      htmlFor="contact-message"
+                      className="block text-[0.58rem] tracking-[0.18em] uppercase text-white/28 mb-2 font-medium"
+                      style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
+                    >
+                      Message
+                    </label>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      rows={5}
                     value={form.message}
                     onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                     onBlur={() => setTouched((p) => ({ ...p, message: true }))}
@@ -314,14 +370,16 @@ function ContactModal({ intent, onClose }: { intent: 'message' | 'call'; onClose
                     style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                     placeholder="Tell me about your project..."
                     aria-invalid={touched.message && !!errors.message}
+                    aria-describedby={touched.message && errors.message ? 'contact-message-error' : undefined}
                   />
                   {touched.message && errors.message && (
-                    <span className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.message}</span>
+                    <span id="contact-message-error" className={errorClass} style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>{errors.message}</span>
                   )}
                 </div>
 
                 {status === 'error' && (
                   <p
+                    role="alert"
                     className="text-[0.6rem] tracking-[0.12em] text-red-400/70 font-medium"
                     style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                   >
@@ -363,8 +421,9 @@ export function Contact() {
     return () => window.removeEventListener('open-contact-modal', handler);
   }, []);
 
-  /* ── CYBERSAGE wordmark animation ── */
+  /* ── RAKESH K wordmark animation ── */
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const el = wordmarkRef.current;
     if (!el) return;
 
@@ -447,7 +506,7 @@ export function Contact() {
 
   /* ── Email SplitText animation ── */
   useEffect(() => {
-    if (!sectionRef.current || !emailRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !sectionRef.current || !emailRef.current) return;
     const ctx = gsap.context(() => {
       const split = new SplitText(emailRef.current!, { type: 'chars' });
       gsap.fromTo(

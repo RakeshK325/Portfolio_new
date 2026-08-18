@@ -35,6 +35,8 @@ export function Hero() {
   const subRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     // ── Scramble entrance ──────────────────────────────────────────────────────
     const tl = createTimeline({ delay: 180 });
 
@@ -184,7 +186,7 @@ export function Hero() {
         <div className="pt-22" />
 
         {/* Main content — grows to fill */}
-        <div className="flex flex-col flex-1 justify-end pb-[clamp(2.5rem,6vw,6rem)]">
+        <div className="flex flex-col flex-1 justify-end pb-[clamp(5.5rem,12vw,6rem)]">
 
           {/* Status pill — wraps on narrow phones instead of clipping/overflowing */}
           <motion.div
@@ -275,7 +277,8 @@ export function Hero() {
               <motion.a
                 href="#work"
                 data-cursor="view"
-                className="group flex items-center gap-2 bg-black text-white px-6 py-3.5 text-[0.7rem] font-medium tracking-[0.18em] uppercase hover:bg-black/80 transition-colors duration-200"
+                aria-label="View selected projects"
+                className="hero-cta-primary group flex items-center gap-2 px-6 py-3.5 text-[0.7rem] font-medium tracking-[0.18em] uppercase transition-all duration-300 touch-target"
                 style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -288,9 +291,11 @@ export function Hero() {
                 />
               </motion.a>
               <motion.button
+                type="button"
                 data-cursor="hire"
                 onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
-                className="text-[0.7rem] font-medium tracking-[0.18em] uppercase border px-6 py-3.5 transition-opacity duration-200 hover:opacity-70"
+                aria-label="Open contact form"
+                className="hero-cta-secondary text-[0.7rem] font-medium tracking-[0.18em] uppercase border px-6 py-3.5 transition-all duration-300 touch-target"
                 style={{
                   fontFamily: 'Satoshi, system-ui, sans-serif',
                   color: '#FFFFFF',

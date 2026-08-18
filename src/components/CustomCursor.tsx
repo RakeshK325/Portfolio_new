@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type CursorVariant = 'default' | 'link' | 'view' | 'drag' | 'hire' | 'ask' | 'text';
@@ -50,7 +50,6 @@ export function CustomCursor() {
   const [variant,  setVariant]  = useState<CursorVariant>('default');
   const [isDark,   setIsDark]   = useState(false);
   const [clicking, setClicking] = useState(false);
-  const [mounted,  setMounted]  = useState(false);
 
   const mouse      = useRef({ x: -400, y: -400 });
   const ringPos    = useRef({ x: -400, y: -400 });
@@ -62,25 +61,23 @@ export function CustomCursor() {
 
   useEffect(() => { variantRef.current = variant; }, [variant]);
 
-  // RAF loop: only lerps ring position — no React involvement at all
-  const tick = useCallback(() => {
-    const lag = variantRef.current === 'default' ? 0.095 : 0.075;
-    ringPos.current.x += (mouse.current.x - ringPos.current.x) * lag;
-    ringPos.current.y += (mouse.current.y - ringPos.current.y) * lag;
-    if (ringWrapRef.current) {
-      const scale = clickingRef.current ? 0.86 : 1;
-      ringWrapRef.current.style.transform =
-        `translate3d(${ringPos.current.x}px,${ringPos.current.y}px,0) translate(-50%,-50%) scale(${scale})`;
-    }
-    rafRef.current = requestAnimationFrame(tick);
-  }, []);
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
     if (window.innerWidth < 768) return;
 
-    setMounted(true);
+    const tick = () => {
+      const lag = variantRef.current === 'default' ? 0.095 : 0.075;
+      ringPos.current.x += (mouse.current.x - ringPos.current.x) * lag;
+      ringPos.current.y += (mouse.current.y - ringPos.current.y) * lag;
+      if (ringWrapRef.current) {
+        const scale = clickingRef.current ? 0.86 : 1;
+        ringWrapRef.current.style.transform =
+          `translate3d(${ringPos.current.x}px,${ringPos.current.y}px,0) translate(-50%,-50%) scale(${scale})`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
     rafRef.current = requestAnimationFrame(tick);
 
     // ── Hot path: position only, zero React state updates ─────────────────
@@ -148,9 +145,7 @@ export function CustomCursor() {
       document.removeEventListener('mouseleave', hide);
       document.removeEventListener('mouseenter', show);
     };
-  }, [tick]);
-
-  if (!mounted) return null;
+  }, []);
 
   const cfg = CONFIGS[variant];
   const fg  = isDark ? '#FFFFFF' : '#0A0A0A';

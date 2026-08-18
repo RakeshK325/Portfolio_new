@@ -37,8 +37,10 @@ function NavLink({ label, href, chevron }: { label: string; href: string; chevro
 function HireBtn() {
   return (
     <button
+      type="button"
       onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
-      className="group flex items-center bg-white rounded-full overflow-hidden hover:bg-white/80 transition-colors duration-200 shrink-0"
+      className="group flex items-center bg-white rounded-full overflow-hidden hover:bg-white/80 transition-colors duration-200 shrink-0 touch-target"
+      aria-label="Open contact form"
     >
       <span
         className="pl-4 pr-1.5 py-1.75 text-black text-[0.61rem] font-medium tracking-[0.14em] uppercase whitespace-nowrap"
@@ -80,6 +82,20 @@ export function Navbar() {
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [mobileOpen]);
 
   /* Compact ≈ logo(160) + sep + 8 links(~580) + sep + CTA(~90) + padding ≈ 900 */
   const COMPACT_W = 920;
@@ -159,8 +175,12 @@ export function Navbar() {
 
           {/* Menu pill */}
           <button
+            type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex items-center gap-2.5 rounded-full px-4 py-3"
+            className="flex items-center gap-2.5 rounded-full px-4 py-3 touch-target"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             style={{
               backdropFilter: 'blur(28px)',
               WebkitBackdropFilter: 'blur(28px)',
@@ -168,7 +188,6 @@ export function Navbar() {
               border: '1px solid rgba(255,255,255,0.08)',
               boxShadow: '0 6px 28px rgba(0,0,0,0.40)',
             }}
-            aria-label="Menu"
           >
             <div className="flex flex-col gap-1.25 w-3.75">
               <motion.span
@@ -194,6 +213,10 @@ export function Navbar() {
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
+              id="mobile-navigation"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Main navigation"
               initial={{ clipPath: 'inset(0 0 100% 0)' }}
               animate={{ clipPath: 'inset(0 0 0% 0)'   }}
               exit={{    clipPath: 'inset(0 0 100% 0)'  }}
@@ -202,9 +225,10 @@ export function Navbar() {
             >
               {/* Visible close button */}
               <button
+                type="button"
                 onClick={() => setMobileOpen(false)}
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/8 flex items-center justify-center hover:bg-white/15 transition-colors"
-                aria-label="Close menu"
+                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/8 flex items-center justify-center hover:bg-white/15 transition-colors touch-target"
+                aria-label="Close navigation menu"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M1 1l12 12M13 1L1 13" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round"/>
@@ -237,8 +261,10 @@ export function Navbar() {
                 className="mt-auto pt-8"
               >
                 <button
+                  type="button"
                   onClick={() => { setMobileOpen(false); window.dispatchEvent(new CustomEvent('open-contact-modal')); }}
-                  className="flex items-center justify-center gap-2 bg-white text-black rounded-full py-4 w-full"
+                  className="flex items-center justify-center gap-2 bg-white text-black rounded-full py-4 w-full touch-target"
+                  aria-label="Open contact form"
                 >
                   <span className="text-[0.68rem] font-medium tracking-[0.18em] uppercase" style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>
                     Hire Me

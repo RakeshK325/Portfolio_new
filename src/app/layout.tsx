@@ -57,18 +57,13 @@ export const metadata: Metadata = {
     'React Developer',
     'Node.js Developer',
     'Flask Developer',
-    // Hire intent
-    'hire systems architect',
-    'hire cloud architect',
-    'hire infrastructure architect',
-    'hire platform engineer',
-    'hire backend architect',
-    'hire software engineer',
-    'freelance solutions architect',
-    'freelance software engineer',
-    'remote systems architect for hire',
-    'contract architect',
-    'available for hire',
+    // Opportunity intent
+    'hire full-stack developer',
+    'hire AI developer',
+    'entry-level software developer',
+    'student developer portfolio',
+    'available for internships',
+    'available for projects',
     // Tech stack
     'Java',
     'Python',
@@ -95,23 +90,20 @@ export const metadata: Metadata = {
     'Google Genkit',
     'Machine Learning',
     // Portfolio / reach
-    'Systems Architect portfolio',
-    'Cloud Architect portfolio',
-    'Software Engineer portfolio',
+    'Full-Stack Developer portfolio',
+    'AI Systems Developer portfolio',
+    'student software developer portfolio',
     'remote developer worldwide',
     'enterprise web development',
     'scalable web applications',
-    'production-grade web systems',
+    'production-ready web systems',
     'high-performance web apps',
-    // Niche specialisations
+    // Focus areas
     'AI engineer',
-    'computer vision developer',
-    'embedded systems developer',
-    'WebRTC developer',
-    'real-time systems engineer',
-    'HIPAA compliant development',
-    'AI surveillance system',
-    'regulated industries software',
+    'LLM integration developer',
+    'machine learning applications',
+    'bioinformatics software',
+    'hackathon developer',
   ],
 
   authors: [{ name: 'Rakesh K', url: BASE_URL }],
@@ -179,7 +171,7 @@ export const metadata: Metadata = {
       'en-GB': BASE_URL,
       'en-CA': BASE_URL,
       'en-AU': BASE_URL,
-      'en-NG': BASE_URL,
+      'en-IN': BASE_URL,
       'x-default': BASE_URL,
     },
   },
@@ -264,27 +256,15 @@ const personSchema = {
   hasOccupation: [
     {
       '@type': 'Occupation',
-      name: 'Software Engineer',
+      name: 'Full-Stack & AI Systems Developer',
       description:
-        'Designs and builds production software — distributed backends, APIs, and full-stack products — from Bangalore, Karnataka, India through full-stack and AI-integrated project engineering.',
+        'Builds full-stack web applications, REST APIs, and AI-integrated software systems through hands-on project engineering from Bangalore, Karnataka, India.',
       occupationLocation: [
         { '@type': 'City', name: 'Bangalore' },
         { '@type': 'Country', name: 'India' },
       ],
       skills:
-        'Software Engineering, Go, Django, Python, TypeScript, Next.js, React, PostgreSQL, Redis, REST APIs, Microservices',
-    },
-    {
-      '@type': 'Occupation',
-      name: 'Infrastructure & Systems Architect',
-      description:
-        'Designs cloud infrastructure, distributed backends, and system architecture — from data models and service boundaries to zero-downtime deployment.',
-      occupationLocation: [
-        { '@type': 'City', name: 'Bangalore' },
-        { '@type': 'Country', name: 'India' },
-      ],
-      skills:
-        'System Design, Cloud Architecture, AWS, Docker, Kubernetes, Terraform, CI/CD, DevOps, Infrastructure as Code, High Availability',
+        'Java, Python, JavaScript, React, Next.js, Node.js, Flask, TypeScript, MySQL, MongoDB, Firebase Firestore, REST APIs, Docker, Kubernetes',
     },
   ],
   knowsAbout: [

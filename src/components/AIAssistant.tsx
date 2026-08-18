@@ -137,17 +137,17 @@ export function AIAssistant() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLInputElement>(null);
   const abortRef  = useRef<AbortController | null>(null);
+  const replyRef  = useRef('');
 
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 350);
   }, [open]);
 
-  /* Shuffle a fresh set of suggestions on open, then rotate every 5s while idle */
+  /* Rotate suggestions every 5s while the assistant is open and idle. */
   useEffect(() => {
     if (!open || messages.length > 0 || !showSugg) return;
-    setSuggestions((prev) => freshSuggestions(prev));
-    const id = setInterval(() => setSuggestions((prev) => freshSuggestions(prev)), 5000);
-    return () => clearInterval(id);
+    const id = window.setInterval(() => setSuggestions((prev) => freshSuggestions(prev)), 5000);
+    return () => window.clearInterval(id);
   }, [open, messages.length, showSugg]);
 
   useEffect(() => {
@@ -158,6 +158,23 @@ export function AIAssistant() {
     setOpen(false);
     abortRef.current?.abort();
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        abortRef.current?.abort();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
 
   const send = async (text: string) => {
     const trimmed = text.trim();
@@ -185,17 +202,17 @@ export function AIAssistant() {
 
       const reader  = res.body.getReader();
       const decoder = new TextDecoder();
-      let reply = '';
+      replyRef.current = '';
 
       setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        reply += decoder.decode(value, { stream: true });
+        replyRef.current += decoder.decode(value, { stream: true });
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: 'assistant', content: reply };
+          updated[updated.length - 1] = { role: 'assistant', content: replyRef.current };
           return updated;
         });
       }
@@ -218,7 +235,8 @@ export function AIAssistant() {
       <motion.button
         data-cursor="ask"
         onClick={() => setOpen(true)}
-        className="fixed bottom-8 left-8 z-50 flex items-center gap-3 text-white"
+        className="ai-assistant-trigger fixed bottom-8 left-8 z-50 flex items-center gap-3 text-white touch-target"
+        aria-expanded={open}
         style={{
           background: '#0a0a0a',
           border: '1px solid rgba(255,255,255,0.12)',
@@ -279,6 +297,9 @@ export function AIAssistant() {
             {/* Panel */}
             <motion.div
               data-theme="dark"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="ai-assistant-title"
               style={{
                 position: 'fixed',
                 bottom: 0,
@@ -343,7 +364,7 @@ export function AIAssistant() {
                           margin: 0,
                         }}
                       >
-                        Rakesh K AI
+                        <span id="ai-assistant-title">Rakesh K AI</span>
                       </p>
                       {/* Live dot */}
                       <span style={{ position: 'relative', display: 'inline-flex', width: 5, height: 5 }}>
@@ -377,7 +398,10 @@ export function AIAssistant() {
                 </div>
 
                 <button
+                  type="button"
                   onClick={close}
+                  aria-label="Close AI assistant"
+                  className="touch-target"
                   style={{
                     width: 28,
                     height: 28,
@@ -433,7 +457,7 @@ export function AIAssistant() {
                           margin: 0,
                         }}
                       >
-                        Hello. I'm Rakesh K's AI assistant — ask me about his skills, projects, and full-stack and AI development interests.
+                        Hello. I&apos;m Rakesh K&apos;s AI assistant — ask me about his skills, projects, and full-stack and AI development interests.
                       </p>
                       <p
                         style={{
@@ -591,11 +615,15 @@ export function AIAssistant() {
                   }}
                   onFocus={() => {}}
                 >
+                  <form
+                    onSubmit={(event) => { event.preventDefault(); void send(input); }}
+                    style={{ display: 'flex', alignItems: 'center', width: '100%' }}
+                  >
                   <input
                     ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') send(input); }}
+                    aria-label="Ask the AI assistant a question"
                     placeholder="Ask about skills, projects, availability…"
                     disabled={streaming}
                     style={{
@@ -611,8 +639,9 @@ export function AIAssistant() {
                     }}
                   />
                   <button
-                    onClick={() => send(input)}
+                    type="submit"
                     disabled={!input.trim() || streaming}
+                    aria-label="Send question"
                     style={{
                       width: 38,
                       height: 38,
@@ -629,6 +658,7 @@ export function AIAssistant() {
                   >
                     <Send size={12} />
                   </button>
+                  </form>
                 </div>
 
                 <p

@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [
         `${BASE_URL}/rk-icon.svg`,
         `${BASE_URL}/opengraph-image`,
-        `${BASE_URL}/hero_image.png`,
       ],
     },
     {

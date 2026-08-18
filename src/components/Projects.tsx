@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
@@ -18,7 +18,7 @@ const PROJECTS = [
     tagline: 'Full-stack MERN platform automating faculty self-appraisal workflows across four roles: Admin, Faculty, HOD, and Principal. Includes JWT authentication, RBAC security, file uploads, and PDF generation.',
     stack: ['MongoDB', 'Express.js', 'React', 'Node.js', 'JWT', 'Puppeteer', 'bcrypt'],
     architecture: 'React client → Express/Node API → JWT and RBAC middleware → MongoDB persistence. Multer handles uploads, while Puppeteer generates role-specific appraisal PDFs.',
-    image: '/hero.jpg',
+    image: '/project-faculty.svg',
     year: 'Project',
     repoLink: '',
     liveLink: '',
@@ -30,7 +30,7 @@ const PROJECTS = [
     tagline: 'Full-stack pediatric vaccination platform for dual-schedule UIP/IAP tracking using atomic Firestore batch writes and an AI-driven Smart Availability assistant.',
     stack: ['Next.js 15', 'TypeScript', 'Firebase Firestore', 'Gemini 2.5 Flash', 'Genkit', 'Zod'],
     architecture: 'Next.js application → typed Zod validation → atomic Firestore batch writes → UIP/IAP schedule state. Genkit and Gemini power the Smart Availability assistant.',
-    image: '/hero.jpg',
+    image: '/project-vaccination.svg',
     year: 'Project',
     repoLink: '',
     liveLink: '',
@@ -42,7 +42,7 @@ const PROJECTS = [
     tagline: 'AI-powered platform automating CRISPR target analysis with a gRNA ranking engine evaluating on-target efficiency and off-target risk metrics.',
     stack: ['React', 'Flask', 'Machine Learning', 'REST APIs'],
     architecture: 'React interface → Flask REST API → gRNA ranking engine → machine-learning scoring for on-target efficiency and off-target risk metrics.',
-    image: '/hero.jpg',
+    image: '/project-targetx.svg',
     year: 'Project',
     repoLink: '',
     liveLink: '',
@@ -236,6 +236,7 @@ function BackgroundCanvas() {
 
 function ProjectActions({ project, align = 'left' }: { project: Project; align?: 'left' | 'right' }) {
   const [expanded, setExpanded] = useState(false);
+  const panelId = `architecture-${project.id}-${useId().replace(/:/g, '')}`;
   const right = align === 'right';
   const actionStyle: React.CSSProperties = {
     display: 'inline-flex',
@@ -259,6 +260,8 @@ function ProjectActions({ project, align = 'left' }: { project: Project; align?:
         <button
           type="button"
           aria-expanded={expanded}
+          aria-controls={panelId}
+          aria-label={`${expanded ? 'Hide' : 'View'} architecture for ${project.name}`}
           onClick={() => setExpanded((value) => !value)}
           style={actionStyle}
         >
@@ -284,6 +287,9 @@ function ProjectActions({ project, align = 'left' }: { project: Project; align?:
       <AnimatePresence initial={false}>
         {expanded && (
           <motion.div
+            id={panelId}
+            role="region"
+            aria-label={`${project.name} architecture`}
             initial={{ opacity: 0, height: 0, y: -6 }}
             animate={{ opacity: 1, height: 'auto', y: 0 }}
             exit={{ opacity: 0, height: 0, y: -6 }}
@@ -546,7 +552,7 @@ export function Projects() {
     if (!sectionRef.current || !cubeRef.current) return;
     // Desktop only — mobile renders a plain scrolling list, so there is no cube
     // to drive and no scroll-jacked height to scrub against.
-    if (window.innerWidth < 768) return;
+    if (window.innerWidth < 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
@@ -619,7 +625,7 @@ export function Projects() {
       {/* ── Sticky viewport — desktop only ──────────────────────────────────── */}
       <div
         data-cursor="view"
-        className="hidden md:block"
+        className="projects-motion-desktop hidden md:block"
         style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}
       >
 
@@ -1007,6 +1013,23 @@ export function Projects() {
           </div>
         </div>
 
+      </div>
+
+      {/* ── Reduced-motion fallback — readable at every desktop width ────────── */}
+      <div className="projects-reduced-fallback px-5 md:px-12 pt-[clamp(4rem,8vw,7rem)] pb-[clamp(4rem,8vw,7rem)]">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-center gap-3 mb-7">
+            <span style={{ fontFamily: 'Satoshi, system-ui, sans-serif', fontSize: '0.52rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)' }}>02 / Work</span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+            <span style={{ fontFamily: 'Satoshi, system-ui, sans-serif', fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)' }}>{PROJECTS.length} Projects</span>
+          </div>
+          <h2 style={{ fontFamily: 'Satoshi, system-ui, sans-serif', fontWeight: 900, fontSize: 'clamp(2.8rem, 8vw, 6rem)', letterSpacing: '-0.05em', lineHeight: 0.88, color: 'rgba(255,255,255,0.94)', marginBottom: 'clamp(2rem, 5vw, 3rem)' }}>
+            Selected <span style={{ fontFamily: 'var(--font-instrument), Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'rgba(255,255,255,0.3)' }}>Work</span>
+          </h2>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {PROJECTS.map((project, index) => <MobileProjectCard key={project.id} project={project} index={index} />)}
+          </div>
+        </div>
       </div>
 
       {/* ── Mobile (< md) — plain scrolling list, no scroll-jack, no cube ───── */}

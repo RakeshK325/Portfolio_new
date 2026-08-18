@@ -265,46 +265,6 @@ function CertRow({
   );
 }
 
-/* ── GitHub Activity block ────────────────────────────────────────────────── */
-interface GHEvent  { action: string; repo: string; time: string; }
-interface GHDay    { date: string; count: number; level: number; }
-interface GHData   { login: string; repos: number; followers: number; lastActive: string; totalLastYear: number; contributions: GHDay[]; events: GHEvent[]; }
-
-const LEVEL_OPACITY = ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.22)', 'rgba(255,255,255,0.42)', 'rgba(255,255,255,0.65)', 'rgba(255,255,255,0.88)'];
-
-function ContribGrid({ contributions }: { contributions: GHDay[] }) {
-  // Build week columns from the contributions array
-  const weeks: GHDay[][] = [];
-  let week: GHDay[] = [];
-  contributions.forEach((day, i) => {
-    week.push(day);
-    if (week.length === 7 || i === contributions.length - 1) {
-      weeks.push(week);
-      week = [];
-    }
-  });
-
-  return (
-    <div className="flex gap-[3px] overflow-hidden w-full">
-      {weeks.map((wk, wi) => (
-        <div key={wi} className="flex flex-col gap-[3px] flex-1 min-w-0">
-          {wk.map((day, di) => (
-            <div
-              key={di}
-              title={`${day.date}: ${day.count} contributions`}
-              className="rounded-[2px]"
-              style={{
-                aspectRatio: '1',
-                backgroundColor: LEVEL_OPACITY[day.level] ?? LEVEL_OPACITY[0],
-              }}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 /* ── Main section ─────────────────────────────────────────────────────────── */
 export function Credentials() {
   const sectionRef   = useRef<HTMLElement>(null);
@@ -313,7 +273,7 @@ export function Credentials() {
   const sectionInView = useInView(sectionRef, { once: true, margin: '-12%' });
   const resumeInView  = useInView(resumeRef,  { once: true, margin: '-8%'  });
   const [hoveredCert, setHoveredCert] = useState<number | null>(null);
-  const floatItems = useMemo(buildFloatItems, []);
+  const floatItems = useMemo(() => buildFloatItems(), []);
 
   useEffect(() => {
     if (!sectionRef.current || !lineRef.current) return;

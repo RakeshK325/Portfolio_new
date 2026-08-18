@@ -305,7 +305,7 @@ export function Experience() {
   const sectionInView = useInView(sectionRef, { once: true, margin: '-12%' });
 
   useEffect(() => {
-    if (window.innerWidth < 1024) return;
+    if (window.innerWidth < 1024 || EXPERIENCE.length <= 1) return;
 
     const pin      = pinRef.current;
     const track    = trackRef.current;
@@ -494,7 +494,7 @@ export function Experience() {
         <div className="bg-white">{Header}</div>
 
         {/* Pinned horizontal scroll */}
-        <div ref={pinRef} data-cursor="drag" className="h-screen overflow-hidden relative" style={{ isolation: 'isolate' }}>
+        <div ref={pinRef} data-cursor="view" className="h-screen overflow-hidden relative" style={{ isolation: 'isolate' }}>
           {/* Video */}
           <video
             autoPlay muted loop playsInline preload="none"
@@ -527,7 +527,7 @@ export function Experience() {
               01 · Full-Stack & AI Systems Developer · Hackathon & Project Engineering
             </span>
             <span style={{ ...S.micro, color: '#D9D9D9', mixBlendMode: 'difference' }}>
-              ← Drag to navigate →
+              Scroll to read
             </span>
           </div>
 

@@ -9,31 +9,31 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const STEPS = [
   {
     index: '01',
-    title: 'Discovery',
-    duration: 'Days 1–3',
-    body: 'We start with the problem, not the tech. I map your goals, users, and constraints, then turn them into a scoped plan with clear deliverables — so you know exactly what you’re getting and when.',
-    tags: ['Goals', 'Scope', 'Timeline'],
+    title: 'Frame the Problem',
+    duration: 'Start here',
+    body: 'I begin with the user, the constraint, and the outcome. Clear requirements make the later technical decisions sharper, smaller, and easier to trust.',
+    tags: ['Users', 'Scope', 'Outcome'],
   },
   {
     index: '02',
-    title: 'Architecture',
-    duration: 'Week 1',
-    body: 'I design the system before writing a line of production code — data models, API contracts, infrastructure, and security boundaries. The result is software that scales cleanly instead of collapsing under its own weight.',
-    tags: ['System Design', 'Data Models', 'Security'],
+    title: 'Design the System',
+    duration: 'Before code',
+    body: 'I map the data, API boundaries, auth model, and integration points before implementation. The goal is a system that stays understandable as features accumulate.',
+    tags: ['Data Models', 'API Contracts', 'Security'],
   },
   {
     index: '03',
-    title: 'Build & Ship',
+    title: 'Build in Slices',
     duration: 'Core sprint',
-    body: 'Tight, visible iterations. You see working software early and often, with weekly check-ins and a live staging URL. Momentum over perfection — high-impact features first, polished relentlessly.',
-    tags: ['Iterative', 'Weekly Demos', 'Staging'],
+    body: 'I turn the plan into focused, testable increments. Each slice keeps the feedback loop short, so the product becomes more useful without becoming harder to change.',
+    tags: ['Iterative', 'Testable', 'Feedback'],
   },
   {
     index: '04',
-    title: 'Launch & Support',
-    duration: 'Go-live +',
-    body: 'Zero-downtime deployment, performance tuning, and a hand-off you can actually maintain. I stay on after launch to monitor, fix, and extend — your platform keeps getting better, not stale.',
-    tags: ['Deploy', 'Monitoring', 'Handover'],
+    title: 'Refine the Details',
+    duration: 'Before hand-off',
+    body: 'I finish with responsive QA, accessibility checks, performance tuning, and a clear hand-off. The last pass is where a working build becomes a dependable experience.',
+    tags: ['Responsive', 'Accessible', 'Polished'],
   },
 ];
 
@@ -168,7 +168,7 @@ export function Process() {
                 animate={sectionInView ? { y: 0 } : {}}
                 transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
               >
-                Work
+                Build
               </motion.span>
             </span>
           </h2>
@@ -180,8 +180,8 @@ export function Process() {
             animate={sectionInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
           >
-            Hiring an architect shouldn’t feel like a gamble. Here’s the exact, predictable path
-            from first conversation to a launched, maintainable product — no disappearing acts.
+            A clear, repeatable way to move from a real problem to a thoughtful, maintainable product —
+            with the technical decisions explained along the way.
           </motion.p>
         </div>
 
@@ -208,16 +208,18 @@ export function Process() {
               className="text-white/70"
               style={{ fontFamily: 'Satoshi, system-ui, sans-serif', fontSize: 'clamp(0.9rem,1.4vw,1.15rem)' }}
             >
-              Currently accepting new projects —{' '}
+              Open to thoughtful collaborations and project opportunities —{' '}
               <span style={{ fontFamily: 'var(--font-instrument), Georgia, serif', fontStyle: 'italic', color: 'rgba(255,255,255,0.55)' }}>
-                limited slots this quarter.
+                let’s build something useful.
               </span>
             </p>
           </div>
           <button
+            type="button"
             onClick={() => window.dispatchEvent(new CustomEvent('open-contact-modal'))}
             data-cursor="hire"
-            className="group inline-flex items-center gap-3 border border-white/20 px-7 py-3.5 text-white/65 hover:text-white hover:border-white/50 hover:bg-white/[0.04] transition-colors duration-300 shrink-0"
+            aria-label="Open contact form to start a project"
+            className="group inline-flex items-center gap-3 border border-white/20 px-7 py-3.5 text-white/65 hover:text-white hover:border-white/50 hover:bg-white/[0.04] transition-colors duration-300 shrink-0 touch-target"
           >
             <span className="text-[0.62rem] tracking-[0.22em] uppercase font-medium" style={{ fontFamily: 'Satoshi, system-ui, sans-serif' }}>
               Start a Project
