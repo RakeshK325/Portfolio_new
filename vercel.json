@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/pricing",
+      "destination": "https://cybersage-pricing.vercel.app/pricing"
+    },
+    {
+      "source": "/pricing/:path*",
+      "destination": "https://cybersage-pricing.vercel.app/pricing/:path*"
+    }
+  ]
+}
