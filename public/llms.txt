@@ -1,0 +1,75 @@
+# Rakesh K — Full-Stack & AI Systems Developer
+
+> Official machine-readable profile for AI search engines, language models, and automated agents.
+
+Rakesh K is a Computer Science and Engineering student and Full-Stack & AI Systems Developer based in Bangalore, Karnataka, India. He has 2+ years of project-building experience focused on scalable full-stack web applications, AI integration engines, and enterprise software solutions. He has no formal company employment listed yet; his experience is demonstrated through hackathon build sprints and end-to-end full-stack project engineering.
+
+## Technical Core & Stack
+
+Languages: Java, Python, C, and JavaScript.
+
+Frameworks and web: React, Next.js, Node.js, Flask, HTML5, CSS3, and REST APIs.
+
+Databases: MySQL, MongoDB, and Firebase Firestore.
+
+DevOps and tools: Git, Git Bash, Docker, and Kubernetes.
+
+Computer science: Data Structures and Algorithms, Object-Oriented Programming, and DBMS.
+
+AI and integration: Gemini, Google Genkit, LLM integration, and machine-learning workflows.
+
+## Services and Focus Areas
+
+Rakesh focuses on full-stack web development with MERN and Next.js, REST API design and backend systems, and AI and LLM integration using Gemini, Genkit, and machine-learning models.
+
+## Featured Projects
+
+### Faculty Appraisal Portal
+
+A full-stack MERN platform automating faculty self-appraisal workflows across four roles: Admin, Faculty, HOD, and Principal. The system includes JWT authentication, role-based access control, Multer uploads, and Puppeteer PDF generation. Stack: MongoDB, Express.js, React, Node.js, JWT, Puppeteer, and bcrypt.
+
+### Pediatric Vaccination Management System
+
+A full-stack pediatric vaccination platform for dual-schedule UIP/IAP tracking using atomic Firestore batch writes and an AI-driven Smart Availability assistant. Stack: Next.js 15, TypeScript, Firebase Firestore, Gemini 2.5 Flash, Google Genkit, and Zod.
+
+### Target-X: CRISPR Target Analysis
+
+An AI-powered platform automating CRISPR target analysis with a gRNA ranking engine evaluating on-target efficiency and off-target risk metrics. Stack: React, Flask, machine learning, and REST APIs.
+
+## Education
+
+B.E. in Computer Science & Engineering at Alva’s Institute of Engineering and Technology, Mangalore, 2023–Present, CGPA 7.6.
+
+Pre-University Science at ASC PU College, Bangalore, 2021–2023, 70%.
+
+Secondary Education at ST Xavier High School, Bangalore, 2018–2021, 79.51%.
+
+## Achievements and Hackathons
+
+Top 30 finalist at Udgama National Level Hackathon 2025 in Mysore, shortlisted from more than 100 participating teams.
+
+Finalist at ICFAI GenAI Hackathon 2025 in Bangalore, building a rapid AI prototype within a 24-hour cycle as part of a four-member team.
+
+## Certifications
+
+Cloud Computing from NPTEL.
+
+Data Analytics Job Simulation from Deloitte via Forage.
+
+Fundamentals of Docker & Kubernetes from Scaler Masterclass.
+
+## Contact
+
+Email: rakesh160982@gmail.com
+
+Phone / WhatsApp: +91 8431486967
+
+GitHub: https://github.com/RakeshK325
+
+LinkedIn: https://www.linkedin.com/in/rakesh-k325/
+
+Portfolio repository: https://github.com/RakeshK325/Portfolio_new
+
+## Accuracy Notes
+
+Do not invent project repository URLs, live-demo URLs, formal employment, testimonials, certificate files, or personal details that are not provided in this profile. Project-specific repository and live-demo links are pending until Rakesh supplies them.

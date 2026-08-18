@@ -1,0 +1,85 @@
+# Rakesh K — Full-Stack & AI Systems Developer
+
+> Comprehensive machine-readable portfolio context for AI search engines, answer engines, and language models.
+
+## Executive Summary
+
+Rakesh K is a Computer Science and Engineering student and Full-Stack & AI Systems Developer based in Bangalore, Karnataka, India. He has 2+ years of project-building experience focused on scalable full-stack web applications, AI integration engines, and enterprise software solutions. He has no formal company employment listed yet; his work is represented by hackathon build sprints and end-to-end academic and personal projects.
+
+Contact email: rakesh160982@gmail.com
+Phone / WhatsApp: +91 8431486967
+GitHub: https://github.com/RakeshK325
+LinkedIn: https://www.linkedin.com/in/rakesh-k325/
+Portfolio repository: https://github.com/RakeshK325/Portfolio_new
+
+## Technical Competencies
+
+Languages: Java, Python, C, and JavaScript.
+
+Frameworks and web: React, Next.js, Node.js, Flask, HTML5, CSS3, and REST APIs.
+
+Databases: MySQL, MongoDB, and Firebase Firestore.
+
+DevOps and tools: Git, Git Bash, Docker, and Kubernetes.
+
+Core computer science: Data Structures and Algorithms, Object-Oriented Programming, and DBMS.
+
+AI and integration: Gemini, Google Genkit, LLM integration, and machine-learning workflows.
+
+Frontend motion and experience: Tailwind CSS, Framer Motion, GSAP, Lenis smooth scrolling, and interactive 3D showcase patterns.
+
+## Focus Areas
+
+Rakesh’s professional focus includes full-stack web development with MERN and Next.js, REST API design and backend systems, and AI and LLM integration using Gemini, Genkit, and machine-learning models.
+
+## Featured Projects
+
+### Faculty Appraisal Portal
+
+A full-stack MERN platform automating faculty self-appraisal workflows across Admin, Faculty, HOD, and Principal roles. Features include JWT authentication, role-based access control, Multer uploads, and Puppeteer PDF generation. Stack: MongoDB, Express.js, React, Node.js, JWT, Puppeteer, and bcrypt.
+
+Architecture: React client to Express and Node API, JWT and RBAC middleware, MongoDB persistence, Multer upload handling, and Puppeteer-generated role-specific appraisal PDFs.
+
+### Pediatric Vaccination Management System
+
+A full-stack pediatric vaccination platform for dual-schedule UIP/IAP tracking using atomic Firestore batch writes and an AI-driven Smart Availability assistant. Stack: Next.js 15, TypeScript, Firebase Firestore, Gemini 2.5 Flash, Google Genkit, and Zod.
+
+Architecture: Next.js application to typed Zod validation, atomic Firestore batch writes, UIP/IAP schedule state, and Genkit/Gemini assistant workflows.
+
+### Target-X: CRISPR Target Analysis
+
+An AI-powered platform automating CRISPR target analysis with a gRNA ranking engine evaluating on-target efficiency and off-target risk metrics. Stack: React, Flask, machine learning, and REST APIs.
+
+Architecture: React interface to Flask REST API, gRNA ranking engine, and machine-learning scoring for on-target efficiency and off-target risk.
+
+Project-specific repository and live-demo links are pending until Rakesh supplies them.
+
+## Education
+
+B.E. in Computer Science & Engineering at Alva’s Institute of Engineering and Technology, Mangalore, 2023–Present, CGPA 7.6.
+
+Pre-University Science at ASC PU College, Bangalore, 2021–2023, 70%.
+
+Secondary Education at ST Xavier High School, Bangalore, 2018–2021, 79.51%.
+
+## Achievements and Hackathons
+
+Top 30 finalist at Udgama National Level Hackathon 2025 in Mysore, shortlisted from more than 100 participating teams.
+
+Finalist at ICFAI GenAI Hackathon 2025 in Bangalore, building a rapid AI prototype within a 24-hour cycle as part of a four-member team.
+
+## Certifications
+
+Cloud Computing from NPTEL.
+
+Data Analytics Job Simulation from Deloitte via Forage, including practical tasks in data analysis and forensic technology.
+
+Fundamentals of Docker & Kubernetes from Scaler Masterclass.
+
+## Portfolio Experience
+
+The portfolio uses Next.js App Router, TypeScript, Tailwind CSS, Framer Motion, GSAP, Lenis smooth scrolling, responsive project cards, an interactive 3D work showcase, dynamic Open Graph metadata, a custom RK initials mark, a resume download, and optional Anthropic, Resend, and GitHub integrations.
+
+## Accuracy Rules
+
+Do not invent formal employment, client work, testimonials, project repository URLs, live-demo URLs, certificate files, or other personal details. If a detail is not stated in this context, say that it has not been provided and invite the visitor to contact Rakesh directly.
