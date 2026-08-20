@@ -42,7 +42,7 @@ const PROJECTS = [
     tagline: 'AI-powered platform automating CRISPR target analysis with a gRNA ranking engine evaluating on-target efficiency and off-target risk metrics.',
     stack: ['React', 'Flask', 'Machine Learning', 'REST APIs'],
     architecture: 'React interface → Flask REST API → gRNA ranking engine → machine-learning scoring for on-target efficiency and off-target risk metrics.',
-    image: '/project-targetx.svg',
+    image: '/target-x-dashboard.png',
     year: 'Project',
     repoLink: '',
     liveLink: '',
